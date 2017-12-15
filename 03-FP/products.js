@@ -159,3 +159,36 @@ describe('Filter', function(){
 		});
 	});
 });
+
+describe('groupBy', function(){
+	function groupBy(list, keySelector){
+		var result = {};
+		for(var index = 0; index < list.length; index++){
+			let key = keySelector(list[index]);
+			result[key] = result[key] || [];
+			result[key].push(list[index]);
+		}
+		return result;
+	}
+	function describeGroup(groupedObj){
+		for(var key in groupedObj){
+			describe('[Key - ' + key + ']', function(){
+				console.table(groupedObj[key]);
+			});
+		}
+	}
+	describe('products by category', function(){
+		var categoryKeySelector = function(product){
+			return product.category;
+		};
+		var productsByCategory = groupBy(products, categoryKeySelector);
+		describeGroup(productsByCategory);
+	});
+	describe('products by cost', function(){
+		var costKeySelector = function(product){
+			return product.cost > 50 ? 'costly' : 'affordable';
+		};
+		var productsByCost = groupBy(products, costKeySelector);
+		describeGroup(productsByCost);
+	})
+});
