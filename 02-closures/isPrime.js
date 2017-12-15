@@ -55,3 +55,15 @@ var isPrime = memoize(function(n){
 		if(n % index === 0) return false;
 	return true;
 })
+
+
+function memoize(fn){
+	var cache = {};
+	return function(){
+		var key = JSON.stringify(arguments);
+		if (typeof cache[key] !== 'undefined')
+			return cache[key];
+		cache[key] = fn.apply(undefined, arguments);
+		return cache[key];
+	}
+}
